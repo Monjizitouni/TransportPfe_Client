@@ -104,7 +104,7 @@ class _SelectActiveDriverScreenState extends State<SelectActiveDriverScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "TD " + getFareAmountAccordingToVehicleType(index).toString(),
+                      "TD " + getFareAmountAccordingToVehicleType(index).toString().substring(0,4),
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
 

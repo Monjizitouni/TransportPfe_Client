@@ -89,7 +89,7 @@ class AssistantMethods{
   {
     double baseFare,FareAmountPerMinute,FareAmountPerKilometer;
     if (vehicleType == "UberX"){
-      baseFare = 30;
+      baseFare = 4.5;
       FareAmountPerMinute = (directionDetailsInfo.duration_value! / 60) * 3;
       FareAmountPerKilometer = (directionDetailsInfo.distance_value! / 1000) * 20;
     }
@@ -107,8 +107,7 @@ class AssistantMethods{
     }
 
     
-    double totalFareAmount = baseFare + FareAmountPerMinute + FareAmountPerKilometer;
-
+    double totalFareAmount = baseFare * directionDetailsInfo.distance_value!;
     return double.parse(totalFareAmount.toStringAsFixed(1));
   }
 

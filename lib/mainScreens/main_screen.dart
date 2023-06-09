@@ -42,11 +42,13 @@ class _MainScreenState extends State<MainScreen> {
   GoogleMapController? newMapController;
 
   static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
+    target: LatLng(34.0747471, 10.912003),
     zoom: 14.4746,
   );
 
   GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
+  double suggestedRidesConatinerHeight = 0;
+  double serchingForDriverContainerHeight = 0;
   double searchLocationContainerHeight = 220;
   double responseFromDriverContainerHeight = 0;
   double assignedDriverInfoContainerHeight= 0;
@@ -107,19 +109,19 @@ class _MainScreenState extends State<MainScreen> {
 
     var sourceLocation =  Provider.of<AppInfo>(context,listen: false).userPickupLocation;
     var destinationLocation = Provider.of<AppInfo>(context,listen: false).userDropOffLocation;
- var response = http.post(
-       Uri.parse("http://192.168.1.9:3000/Dest/add/645116db503d1f567dc00898"),
-        body: {"lat": sourceLocation!.locationLatitude.toString() , "long": sourceLocation.locationLongitude.toString(), "desti": destinationLocation!.locationName.toString()});
+//  var response = http.post(
+//        Uri.parse("http://192.168.1.9:3000/Dest/add/645116db503d1f567dc00898"),
+//         body: {"lat": sourceLocation!.locationLatitude.toString() , "long": sourceLocation.locationLongitude.toString(), "desti": destinationLocation!.locationName.toString()});
 
-    print(response.toString());
+//     print(response.toString());
 
     Map sourceLocationMap ={
-      "latitude" : sourceLocation.locationLatitude,
+      "latitude" : sourceLocation!.locationLatitude,
       "longitude" : sourceLocation.locationLongitude
     };
 
     Map destinationLocationMap ={
-      "latitude" : destinationLocation.locationLatitude,
+      "latitude" : destinationLocation!.locationLatitude,
       "longitude" : destinationLocation.locationLongitude
     };
 
@@ -334,6 +336,9 @@ class _MainScreenState extends State<MainScreen> {
           .once()
           .then((dataSnapshot) {
             var driverInfo = dataSnapshot.snapshot.value;
+            
+
+
             driversList.add(driverInfo);
 
       });
@@ -397,9 +402,12 @@ class _MainScreenState extends State<MainScreen> {
 
   showUIForAssignedDriverInfo(){
     setState(() {
+   
       searchLocationContainerHeight = 0;
       responseFromDriverContainerHeight = 0;
       assignedDriverInfoContainerHeight = 240;
+      suggestedRidesConatinerHeight = 0;
+      bottomPaddingofMap = 200;
     });
   }
 
@@ -636,7 +644,9 @@ class _MainScreenState extends State<MainScreen> {
                 padding: const EdgeInsets.all(20.0),
                 child: Center(
                   child: AnimatedTextKit(
+
                     animatedTexts: [
+                     
                       FadeAnimatedText(
                         'Waiting for driver response\n from driver',
                         duration: const Duration(seconds: 10),
@@ -650,10 +660,14 @@ class _MainScreenState extends State<MainScreen> {
                         textStyle: const TextStyle(color: Colors.black, fontSize: 35.0, fontWeight: FontWeight.bold, fontFamily: 'Canterbury'),
                       ),
                     ],
+                    
                   ),
+                  
 
 
                 ),
+          
+
               ),
             ),
           ),
@@ -914,7 +928,28 @@ class _MainScreenState extends State<MainScreen> {
               ),
 
             ),
-          )
+          ),
+          // Positioned(
+          //   bottom: 0,
+          //   left: 0,
+          //   right: 0,
+          //   child: Container(
+          //     height: assignedDriverInfoContainerHeight,
+          //     decoration: BoxDecoration(color: Colors.white,
+          //     borderRadius: BorderRadius.circular(10)),
+          //     child: Padding(
+          //       padding: EdgeInsets.all(10),
+          //       child: Column(
+          //         children: [
+          //           Text(driverRideStatus,style: TextStyle(fontWeight: FontWeight.bold ),),
+          //           SizedBox(height: 5,),
+          //           Divider(thickness: 1, colors,)
+          //         ],
+
+
+
+
+          // )
 
     ]
       )
