@@ -336,7 +336,9 @@ class _MainScreenState extends State<MainScreen> {
           .once()
           .then((dataSnapshot) {
             var driverInfo = dataSnapshot.snapshot.value;
-            
+            print("this is driver info"+ driverInfo.toString());
+            //var response =  http.get('https://maps.googleapis.com/maps/api/distancematrix/json?destinations=,-73.933783&origins=40.6655101,-73.89188969999998&key=AIzaSyCATDsiH6Q7CAACXb47qDJhOuCUuQjs4lg' as Uri);
+   // print(response);
 
 
             driversList.add(driverInfo);
@@ -1079,7 +1081,7 @@ class _MainScreenState extends State<MainScreen> {
 
   initializeGeoFireListener(){
     Geofire.initialize("ActiveDrivers");
-    Geofire.queryAtLocation(userCurrentPosition!.latitude, userCurrentPosition!.longitude,10)!.listen((map) { // Search for active drivers from user's location upto 10km radius
+    Geofire.queryAtLocation(userCurrentPosition!.latitude, userCurrentPosition!.longitude,5)!.listen((map) async { // Search for active drivers from user's location upto 10km radius
       print(map);
       if (map != null) {
         var callBack = map['callBack'];
@@ -1090,6 +1092,14 @@ class _MainScreenState extends State<MainScreen> {
         switch (callBack) {
         //whenever any driver become active/online
           case Geofire.onKeyEntered:
+    //          print("hellooooooooooooooooooo ////////");
+    //          var url = Uri.parse('https://maps.googleapis.com/maps/api/distancematrix/json?destinations='+map['latitude'].toString() +', '+map['longitude'].toString()+  '&origins='+userCurrentPosition!.latitude.toString()+', '+userCurrentPosition!.longitude.toString()+ '&key=AIzaSyCATDsiH6Q7CAACXb47qDJhOuCUuQjs4lg'); 
+    //   var response = await http.get(url);
+   
+    // print("thissssssssssss///////"+response.body.toString());
+    // Map<String , dynamic> m = jsonDecode(response.body);
+    // var distanceUserChauff = int.parse(m['rows']['elements']['distance']['value']);
+    // if (distanceUserChauff < 5000){
             ActiveNearbyAvailableDrivers activeNearbyAvailableDriver = ActiveNearbyAvailableDrivers();
             activeNearbyAvailableDriver.locationLatitude = map['latitude'];
             activeNearbyAvailableDriver.locationLongitude = map['longitude'];
@@ -1099,8 +1109,9 @@ class _MainScreenState extends State<MainScreen> {
             {
               displayActiveDriversOnUsersMap();
             }
+    
             break;
-
+    
         //whenever any driver become non-active/offline
           case Geofire.onKeyExited:
             GeoFireAssistant.deleteOfflineDriverFromList(map['key']);
@@ -1129,7 +1140,7 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  void displayActiveDriversOnUsersMap(){
+   displayActiveDriversOnUsersMap()  {
     setState(() {
       markersSet.clear();
       circlesSet.clear();
@@ -1139,7 +1150,6 @@ class _MainScreenState extends State<MainScreen> {
 
     for(ActiveNearbyAvailableDrivers eachDriver in GeoFireAssistant.activeNearbyAvailableDriversList){
       LatLng eachDriverPosition = LatLng(eachDriver.locationLatitude!, eachDriver.locationLongitude!);
-
       Marker marker = Marker(
         markerId: MarkerId(eachDriver.driverId!),
         position: eachDriverPosition,
@@ -1157,6 +1167,7 @@ class _MainScreenState extends State<MainScreen> {
 
   }
 
+
   createActiveDriverIconMarker()
   {
     if(activeNearbyIcon == null)
@@ -1168,7 +1179,6 @@ class _MainScreenState extends State<MainScreen> {
       });
     }
   }
-
 
 
 

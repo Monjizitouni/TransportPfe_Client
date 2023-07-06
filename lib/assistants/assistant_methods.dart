@@ -45,6 +45,7 @@ class AssistantMethods{
     return humanReadableAddress;
 
   }
+  
 
   static void readOnlineUserCurrentInfo(){
     currentFirebaseUser = firebaseAuth.currentUser;
@@ -89,20 +90,20 @@ class AssistantMethods{
   {
     double baseFare,FareAmountPerMinute,FareAmountPerKilometer;
     if (vehicleType == "UberX"){
-      baseFare = 4.5;
-      FareAmountPerMinute = (directionDetailsInfo.duration_value! / 60) * 3;
+      baseFare = 3.5;
+     
       FareAmountPerKilometer = (directionDetailsInfo.distance_value! / 1000) * 20;
     }
 
     else if (vehicleType == "Uber Premier"){
-      baseFare = 50;
-      FareAmountPerMinute = (directionDetailsInfo.duration_value! / 60) * 4;
+      baseFare = 3.5;
+     
       FareAmountPerKilometer = (directionDetailsInfo.distance_value! / 1000) * 25;
     }
 
     else{
       baseFare = 20;
-      FareAmountPerMinute = (directionDetailsInfo.duration_value! / 60) * 1;
+      
       FareAmountPerKilometer = (directionDetailsInfo.distance_value! / 1000) * 10;
     }
 
@@ -113,17 +114,35 @@ class AssistantMethods{
 
   // Postman work
   static sendNotificationToDriver(context, String? rideRequestID,String deviceRegistrationToken) async{
-    
+    print("Tokennnnnn///"+ cloudMessagingServerToken);
     Map<String,String> headerNotification = {
       'Content-Type' : 'application/json',
-      'Authorization' : cloudMessagingServerToken,
+      'Authorization' : "Bearer ya29.a0AbVbY6PCwGQm1W8XPhQ-1u4cPKXE7ws1roi0WoQpLXHmOKBRiyA3VcEvUl6uYakGR5wDM3UaeiOVohTA0R3zezVQq1nJPTvvykFsLIo3EMcdswxWX3aO-qO4aTI0K36VBEwsgvaDh0lNx-DxyUYAg3aJX45kaCgYKAacSARASFQFWKvPlNiqDJhq8E_4506Ux6r77Ug0163", 
+
+      
     };
+
+   
+
+  
 
     Map bodyNotification = {
       
         "body":"You have a new ride request!",
         "title":"New Ride Request"
       };
+       Map message = {
+
+      "token" : "AAAAqBhyv5M:APA91bGRay6RgY2pXGlErGHU1npvWXrCvzdzl25CiqIFnpbLqW2c_ff43g_8xKgXFuC5qG77YI-hdIG60nXYmLLTA1xC8nAPZNmGpxsZkVi4zmO0DdKYt2G6INo1khuXBc0nxUXh7IeW",
+      "notification": bodyNotification,
+
+    };
+      Map fcm = {
+        "message" : message,
+
+
+
+    };
 
       Map dataMap = {
         "click_action": "FLUTTER_NOTIFICATION_CLICK",
@@ -135,20 +154,22 @@ class AssistantMethods{
       Map officielNotificationFormat = {
         "notification" : bodyNotification,
         "data" : dataMap,
-        "priority" : "high",
-        "to" : deviceRegistrationToken,
+        //"priority" : "high",
+        "token" : deviceRegistrationToken,
 
 
       };
 
     // Work of postman to send notification
     var responseNotification = await post(
-      Uri.parse("https://fcm.googleapis.com/fcm/send"),
+      Uri.parse("https://fcm.googleapis.com/v1/projects/transport-app-36443/messages:send"),
       headers: headerNotification,
-      body: jsonEncode(officielNotificationFormat),    
+      body: jsonEncode(fcm),    
           );
 print("emchiiiiiiiiiiii brabiiiiiiiiiiiii:" + responseNotification.body.toString());
   }
+
+  
 
   // For Trip history
   static void readRideRequestKeys(context){
@@ -203,7 +224,4 @@ print("emchiiiiiiiiiiii brabiiiiiiiiiiiii:" + responseNotification.body.toString
     }
 
   }
-
-
-
 }

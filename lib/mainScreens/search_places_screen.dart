@@ -18,6 +18,7 @@ class SearchPlaces extends StatefulWidget {
 class _SearchPlacesState extends State<SearchPlaces> {
   TextEditingController searchLocationTextEditingController = TextEditingController();
   List<PredictedPlaces> placesPredictedList = [];
+  List<PredictedPlaces> placesPredictedList1 = [];
 
   void findPlaceAutoCompleteSearch(String input) async {
     if(input.length > 1){
@@ -37,6 +38,31 @@ class _SearchPlacesState extends State<SearchPlaces> {
 
          setState(() {
            placesPredictedList = placesPredictionList; // Storing all the list of places
+         });
+      }
+
+
+
+    }
+  }
+  void findPlaceAutoCompleteSearch1(String input) async {
+    if(input.length > 1){
+      // Create Api Url to fetch Addresses
+      String urlAutoCompleteSearch = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=$mapKey&components=country:TN";
+      var responseAutoCompleteSearch =  await RequestAssistant.ReceiveRequest(urlAutoCompleteSearch);
+
+      if(responseAutoCompleteSearch == "Error fetching the request"){
+        return;
+      }
+
+      if(responseAutoCompleteSearch["status"] == "OK"){ // Response Successful
+         var placesPredictions = responseAutoCompleteSearch["predictions"]; // JsonData
+
+         // Converting all JsonData to List of model PredictedPlaces and storing in placesPredictionList
+         var placesPredictionList1 =  (placesPredictions as List).map((jsonData) => PredictedPlaces.fromJson(jsonData)).toList();
+
+         setState(() {
+           placesPredictedList1 = placesPredictionList1; // Storing all the list of places
          });
       }
 
@@ -112,6 +138,8 @@ class _SearchPlacesState extends State<SearchPlaces> {
 
                         Expanded(
                           child: TextFormField(
+                             onChanged: (textTyped) {
+                              findPlaceAutoCompleteSearch(textTyped);},
                             decoration: InputDecoration(
                                 hintText: Provider.of<AppInfo>(context).userPickupLocation!=null ?
                                 Provider.of<AppInfo>(context).userPickupLocation!.locationName!.substring(0,16)
@@ -142,7 +170,28 @@ class _SearchPlacesState extends State<SearchPlaces> {
 
                           ),
                         ),
+                (placesPredictedList1.length > 0)
+                ? Expanded(
+                    child: ListView.separated(
+                      itemCount: placesPredictedList1.length,
+                      physics: const ClampingScrollPhysics(),
 
+                      itemBuilder: (context, index){
+                        return PlacesPredictionTileDesign(
+                          predictedPlaces: placesPredictedList1[index],
+                        );
+                      },
+
+                      separatorBuilder: (BuildContext context, int index){
+                        return const Divider(
+                          height: 1,
+                          color: Colors.black,
+                          thickness: 1,
+                        );
+                      },
+                    ),
+            )
+            : Container(),
                       ],
                     ),
 

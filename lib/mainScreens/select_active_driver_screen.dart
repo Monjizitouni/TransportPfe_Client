@@ -53,6 +53,7 @@ class _SelectActiveDriverScreenState extends State<SelectActiveDriverScreen> {
         itemBuilder: (BuildContext context,int index){
           return GestureDetector(
             onTap: (){
+              
               setState(() {
                 chosenDriverId = driversList[index]["id"].toString();
               });
@@ -104,7 +105,7 @@ class _SelectActiveDriverScreenState extends State<SelectActiveDriverScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "TD " + getFareAmountAccordingToVehicleType(index).toString().substring(0,4),
+                      "TD " + getFareAmountAccordingToVehicleType(index).toString().substring(0,3),
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
 
