@@ -7,7 +7,7 @@ import 'package:users_app/mainScreens/rate_driver_screen.dart';
 import 'package:users_app/mainScreens/search_places_screen.dart';
 import 'package:users_app/mainScreens/select_active_driver_screen.dart';
 import 'package:users_app/splashScreen/splash_screen.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'authentication/login_screen.dart';
 import 'authentication/register_screen.dart';
 import 'mainScreens/main_screen.dart';

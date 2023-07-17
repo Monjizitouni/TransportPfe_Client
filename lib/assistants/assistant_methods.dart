@@ -117,8 +117,8 @@ class AssistantMethods{
     print("Tokennnnnn///"+ cloudMessagingServerToken);
     Map<String,String> headerNotification = {
       'Content-Type' : 'application/json',
-      'Authorization' : "Bearer ya29.a0AbVbY6PCwGQm1W8XPhQ-1u4cPKXE7ws1roi0WoQpLXHmOKBRiyA3VcEvUl6uYakGR5wDM3UaeiOVohTA0R3zezVQq1nJPTvvykFsLIo3EMcdswxWX3aO-qO4aTI0K36VBEwsgvaDh0lNx-DxyUYAg3aJX45kaCgYKAacSARASFQFWKvPlNiqDJhq8E_4506Ux6r77Ug0163", 
-
+      'Authorization' : 'Bearer ya29.a0AbVbY6M2xjiJZ4wSIK4CmqUf9j0MEL-kP95VxnIB5plQGa7_gDcfgFe9MFuNJ3Pi9EyKeIUBFoXxdmv0XUPvxo7CSJZXmKy_FR6oidzrOaBHD4e8WAi07u64CHZ0v64BKgNbgz5fv0PGWGrMkgo3Rca7YHQCaCgYKAb4SARASFQFWKvPlKC8LhlVOc2D1rCF3pZxbxg0163', 
+      
       
     };
 
@@ -126,46 +126,50 @@ class AssistantMethods{
 
   
 
-    Map bodyNotification = {
-      
-        "body":"You have a new ride request!",
-        "title":"New Ride Request"
-      };
-       Map message = {
-
-      "token" : "AAAAqBhyv5M:APA91bGRay6RgY2pXGlErGHU1npvWXrCvzdzl25CiqIFnpbLqW2c_ff43g_8xKgXFuC5qG77YI-hdIG60nXYmLLTA1xC8nAPZNmGpxsZkVi4zmO0DdKYt2G6INo1khuXBc0nxUXh7IeW",
-      "notification": bodyNotification,
-
-    };
-      Map fcm = {
-        "message" : message,
-
-
-
-    };
-
-      Map dataMap = {
-        "click_action": "FLUTTER_NOTIFICATION_CLICK",
-        "id": "1",
-        "status": "done",
-        "rideRequestId": rideRequestID
-      };
-      
-      Map officielNotificationFormat = {
-        "notification" : bodyNotification,
-        "data" : dataMap,
-        //"priority" : "high",
-        "token" : deviceRegistrationToken,
+   Map<String, dynamic> bodyNotification = {
+  "body": "You have a new ride request!",
+  "title": "New Ride Request"
+  
+};
+Map<String, dynamic> android =
+  {
+    "priority": "high",
+  };
+  Map<String, dynamic> dataMap = {
+  "click_action": "FLUTTER_NOTIFICATION_CLICK",
+  "id": "1",
+  "status": "done",
+  "rideRequestId": rideRequestID
+}; 
+Map<String, dynamic> message = {
+  "token": deviceRegistrationToken,
+   "data": dataMap,
+  "notification": bodyNotification,
+ 
+   "android": android,
+};
 
 
-      };
+
+Map<String, dynamic> officielNotificationFormat = {
+  "notification": bodyNotification,
+  
+ 
+};
+
+
+Map<String, dynamic> fcm = {
+  "message": message,
+};
 
     // Work of postman to send notification
     var responseNotification = await post(
-      Uri.parse("https://fcm.googleapis.com/v1/projects/transport-app-36443/messages:send"),
+      Uri.parse('https://fcm.googleapis.com/v1/projects/transport-app-36443/messages:send'),
       headers: headerNotification,
       body: jsonEncode(fcm),    
           );
+print("hfjhyfghjf "+fcm.toString());
+
 print("emchiiiiiiiiiiii brabiiiiiiiiiiiii:" + responseNotification.body.toString());
   }
 

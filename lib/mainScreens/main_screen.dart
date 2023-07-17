@@ -42,8 +42,8 @@ class _MainScreenState extends State<MainScreen> {
   GoogleMapController? newMapController;
 
   static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(34.0747471, 10.912003),
-    zoom: 14.4746,
+    target: LatLng(36.891696, 10.1815426),
+    zoom: 9.4746,
   );
 
   GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
@@ -503,10 +503,24 @@ class _MainScreenState extends State<MainScreen> {
                   child: Column(
                     children: [
                       //From
-                      Row(
+                      GestureDetector(
+                        onTap: () async {
+                          final result = await Navigator.pushNamed(context,'/search_places_screen');
+                          if (result == null) return;
+                            if(result == "Obtained"){
+                            setState(() {
+                              openNavigationDrawer = false;
+                            });
+
+                            await drawPolylineFromSourceToDestination();
+                          }
+                        },
+                      child :Row(
                         children: [
                           Icon(Icons.add_location_alt_outlined,color: Colors.black),
                           SizedBox(width: 12.0),
+
+                          
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -529,6 +543,7 @@ class _MainScreenState extends State<MainScreen> {
                             ],
                           ),
                         ],
+                      ),
                       ),
 
                       const SizedBox(height: 16),
@@ -806,7 +821,7 @@ class _MainScreenState extends State<MainScreen> {
                             children: [
                               CircleAvatar(
                                 backgroundColor: Colors.white,
-                                child: Image.asset("images/" + carType + ".png"),
+                                child: Image.asset("images/car.png"),
                                 radius: 35,
                               ),
 

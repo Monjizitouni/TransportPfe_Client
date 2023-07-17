@@ -10,7 +10,7 @@ UserModel? currentUserInfo;
 List driversList = [];
 DirectionDetailsInfo? tripDirectionDetailsInfo;
 String chosenDriverId = "";
-String cloudMessagingServerToken = "ya29.a0AWY7Ckk2x9_CEmsbfd6Tsxjfv2iwki9bED53NiNZc90fHjGjQ-pFSBw8wPPl-GfCxcXQ095TPPYSuPShFEOQjX4wEJDu0oKf48NSCmupIp6p5teEvxdpN0-y2-MpzNXJy_m-Nj_bI-ja1rpHW87UhISd0e4vaCgYKARMSARMSFQG1tDrpv8zuEECd151KyS7960Jyng0163";
+String cloudMessagingServerToken = "ya29.a0AbVbY6OvWgt_h7jZeQOQ4qIN-8Pkpdd7_Co_oKA2NfjxYH2jwJJFsExeidDbj8DiqBY3jSFgjE6IGms0mbqN8QqDPHmEnzgWJmWyqTlWKks4MXEtUjtTp9KiiW3Qear9-ClQd3iv5hr2hjSpMhPUvGox0e_waCgYKASESARASFQFWKvPlcV90jEHpGgbMKhjalu095Q0163";
 String driverCarDetails = "";
 String carModel = "";
 String carNumber = "";
