@@ -16,58 +16,68 @@ class SearchPlaces extends StatefulWidget {
 }
 
 class _SearchPlacesState extends State<SearchPlaces> {
-  TextEditingController searchLocationTextEditingController = TextEditingController();
+  TextEditingController searchLocationTextEditingController =
+      TextEditingController();
   List<PredictedPlaces> placesPredictedList = [];
   List<PredictedPlaces> placesPredictedList1 = [];
 
   void findPlaceAutoCompleteSearch(String input) async {
-    if(input.length > 1){
+    if (input.length > 1) {
       // Create Api Url to fetch Addresses
-      String urlAutoCompleteSearch = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=$mapKey&components=country:TN";
-      var responseAutoCompleteSearch =  await RequestAssistant.ReceiveRequest(urlAutoCompleteSearch);
+      String urlAutoCompleteSearch =
+          "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=$mapKey&components=country:TN";
+      var responseAutoCompleteSearch =
+          await RequestAssistant.ReceiveRequest(urlAutoCompleteSearch);
 
-      if(responseAutoCompleteSearch == "Error fetching the request"){
+      if (responseAutoCompleteSearch == "Error fetching the request") {
         return;
       }
 
-      if(responseAutoCompleteSearch["status"] == "OK"){ // Response Successful
-         var placesPredictions = responseAutoCompleteSearch["predictions"]; // JsonData
+      if (responseAutoCompleteSearch["status"] == "OK") {
+        // Response Successful
+        var placesPredictions =
+            responseAutoCompleteSearch["predictions"]; // JsonData
 
-         // Converting all JsonData to List of model PredictedPlaces and storing in placesPredictionList
-         var placesPredictionList =  (placesPredictions as List).map((jsonData) => PredictedPlaces.fromJson(jsonData)).toList();
+        // Converting all JsonData to List of model PredictedPlaces and storing in placesPredictionList
+        var placesPredictionList = (placesPredictions as List)
+            .map((jsonData) => PredictedPlaces.fromJson(jsonData))
+            .toList();
 
-         setState(() {
-           placesPredictedList = placesPredictionList; // Storing all the list of places
-         });
+        setState(() {
+          placesPredictedList =
+              placesPredictionList; // Storing all the list of places
+        });
       }
-
-
-
     }
   }
-  void findPlaceAutoCompleteSearch1(String input) async {
-    if(input.length > 1){
-      // Create Api Url to fetch Addresses
-      String urlAutoCompleteSearch = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=$mapKey&components=country:TN";
-      var responseAutoCompleteSearch =  await RequestAssistant.ReceiveRequest(urlAutoCompleteSearch);
 
-      if(responseAutoCompleteSearch == "Error fetching the request"){
+  void findPlaceAutoCompleteSearch1(String input) async {
+    if (input.length > 1) {
+      // Create Api Url to fetch Addresses
+      String urlAutoCompleteSearch =
+          "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=$mapKey&components=country:TN";
+      var responseAutoCompleteSearch =
+          await RequestAssistant.ReceiveRequest(urlAutoCompleteSearch);
+
+      if (responseAutoCompleteSearch == "Error fetching the request") {
         return;
       }
 
-      if(responseAutoCompleteSearch["status"] == "OK"){ // Response Successful
-         var placesPredictions = responseAutoCompleteSearch["predictions"]; // JsonData
+      if (responseAutoCompleteSearch["status"] == "OK") {
+        // Response Successful
+        var placesPredictions =
+            responseAutoCompleteSearch["predictions"]; // JsonData
 
-         // Converting all JsonData to List of model PredictedPlaces and storing in placesPredictionList
-         var placesPredictionList1 =  (placesPredictions as List).map((jsonData) => PredictedPlaces.fromJson(jsonData)).toList();
+        // Converting all JsonData to List of model PredictedPlaces and storing in placesPredictionList
+        var placesPredictionList1 = (placesPredictions as List)
+            .map((jsonData) => PredictedPlaces.fromJson(jsonData))
+            .toList();
 
-         setState(() {
-           placesPredictedList1 = placesPredictionList1; // Storing all the list of places
-         });
+        setState(() {
+          placesPredictedList1 =
+              placesPredictionList1; // Storing all the list of places
+        });
       }
-
-
-
     }
   }
 
@@ -91,58 +101,55 @@ class _SearchPlacesState extends State<SearchPlaces> {
                   ),
                 ],
               ),
-
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
                     const SizedBox(height: 30),
-
                     Stack(
                       children: [
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             // Return to Main Screen
                             Navigator.pop(context);
                           },
-
                           child: const Icon(
                             Icons.arrow_back,
                             color: Colors.black,
                           ),
                         ),
-
                         const Center(
                           child: Text(
                             "Search Dropoff Location",
                             style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.black,
-                                fontWeight: FontWeight.bold
-                            ),
+                                fontWeight: FontWeight.bold),
                           ),
                         )
                       ],
                     ),
-
                     const SizedBox(height: 16),
-
                     Row(
                       children: [
                         const Icon(
                           Icons.adjust_sharp,
                           color: Colors.black,
                         ),
-
                         const SizedBox(width: 16),
-
                         Expanded(
                           child: TextFormField(
-                             onChanged: (textTyped) {
-                              findPlaceAutoCompleteSearch(textTyped);},
+                            onChanged: (textTyped) {
+                              findPlaceAutoCompleteSearch(textTyped);
+                            },
                             decoration: InputDecoration(
-                                hintText: Provider.of<AppInfo>(context).userPickupLocation!=null ?
-                                Provider.of<AppInfo>(context).userPickupLocation!.locationName!.substring(0,16)
+                                hintText: Provider.of<AppInfo>(context)
+                                            .userPickupLocation !=
+                                        null
+                                    ? Provider.of<AppInfo>(context)
+                                        .userPickupLocation!
+                                        .locationName!
+                                        .substring(0, 16)
                                     : "No Address found",
                                 fillColor: Colors.grey.shade100,
                                 filled: true,
@@ -153,100 +160,80 @@ class _SearchPlacesState extends State<SearchPlaces> {
                                     width: 1.5,
                                   ),
                                 ),
-
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                   borderSide: BorderSide(
                                     color: Colors.grey.shade100,
                                   ),
                                 ),
-
                                 contentPadding: EdgeInsets.only(
-                                    top: 8.0,
-                                    bottom: 8.0,
-                                    left: 10.0
-                                )
-                            ),
-
+                                    top: 8.0, bottom: 8.0, left: 10.0)),
                           ),
                         ),
-                (placesPredictedList1.length > 0)
-                ? Expanded(
-                    child: ListView.separated(
-                      itemCount: placesPredictedList1.length,
-                      physics: const ClampingScrollPhysics(),
-
-                      itemBuilder: (context, index){
-                        return PlacesPredictionTileDesign(
-                          predictedPlaces: placesPredictedList1[index],
-                        );
-                      },
-
-                      separatorBuilder: (BuildContext context, int index){
-                        return const Divider(
-                          height: 1,
-                          color: Colors.black,
-                          thickness: 1,
-                        );
-                      },
-                    ),
-            )
-            : Container(),
+                        (placesPredictedList1.length > 0)
+                            ? Expanded(
+                                child: ListView.separated(
+                                  itemCount: placesPredictedList1.length,
+                                  physics: const ClampingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return PlacesPredictionTileDesign(
+                                      predictedPlaces:
+                                          placesPredictedList1[index],
+                                      from: true,
+                                    );
+                                  },
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return const Divider(
+                                      height: 1,
+                                      color: Colors.black,
+                                      thickness: 1,
+                                    );
+                                  },
+                                ),
+                              )
+                            : Container(),
                       ],
                     ),
-
                     const SizedBox(height: 16),
-
                     Row(
                       children: [
                         const Icon(
                           Icons.adjust_sharp,
                           color: Colors.black,
                         ),
-
                         const SizedBox(width: 16),
-
                         Expanded(
                           child: TextFormField(
                             onChanged: (textTyped) {
                               findPlaceAutoCompleteSearch(textTyped);
                             },
                             decoration: InputDecoration(
-                              hintText: "Where to?",
-                              fillColor: Colors.grey.shade100,
-                              filled: true,
-                              enabledBorder: OutlineInputBorder(
+                                hintText: "Where to?",
+                                fillColor: Colors.grey.shade100,
+                                filled: true,
+                                enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                   borderSide: BorderSide(
                                     color: Colors.grey.shade100,
                                     width: 1.5,
                                   ),
                                 ),
-
-                              focusedBorder: OutlineInputBorder(
+                                focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                   borderSide: BorderSide(
                                     color: Colors.grey.shade100,
                                   ),
-                              ),
-
-                              contentPadding: const EdgeInsets.only(
-                                top: 8.0,
-                                bottom: 8.0,
-                                left: 10.0
-                              )
-                            ),
-
+                                ),
+                                contentPadding: const EdgeInsets.only(
+                                    top: 8.0, bottom: 8.0, left: 10.0)),
                           ),
                         ),
-
                       ],
                     ),
-
                   ],
                 ),
               ),
-
             ),
 
             // Display Place Predicted Results
@@ -255,14 +242,13 @@ class _SearchPlacesState extends State<SearchPlaces> {
                     child: ListView.separated(
                       itemCount: placesPredictedList.length,
                       physics: const ClampingScrollPhysics(),
-
-                      itemBuilder: (context, index){
+                      itemBuilder: (context, index) {
                         return PlacesPredictionTileDesign(
                           predictedPlaces: placesPredictedList[index],
+                          from: false,
                         );
                       },
-
-                      separatorBuilder: (BuildContext context, int index){
+                      separatorBuilder: (BuildContext context, int index) {
                         return const Divider(
                           height: 1,
                           color: Colors.black,
@@ -270,9 +256,8 @@ class _SearchPlacesState extends State<SearchPlaces> {
                         );
                       },
                     ),
-            )
-            : Container(),
-
+                  )
+                : Container(),
           ],
         ));
   }

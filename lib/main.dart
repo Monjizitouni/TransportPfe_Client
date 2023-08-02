@@ -12,9 +12,9 @@ import 'authentication/login_screen.dart';
 import 'authentication/register_screen.dart';
 import 'mainScreens/main_screen.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   await Firebase.initializeApp();
 
   runApp(ChangeNotifierProvider(
@@ -22,22 +22,16 @@ void main() async{
     child: MaterialApp(
         initialRoute: '/',
         routes: {
-          '/' : (context) => MySplashScreen(),
+          '/': (context) => MySplashScreen(),
           '/main_screen': (context) => MainScreen(),
-         '/login_screen' : (context) => Login(),
-         '/register_screen': (context) => Register(),
-         '/search_places_screen': (context) => SearchPlaces(),
-         '/select_active_driver_screen' : (context) => SelectActiveDriverScreen(),
-         '/rate_driver_screen' : (context) => RateDriverScreen(),
+          '/login_screen': (context) => Login(),
+          '/register_screen': (context) => Register(),
+          '/search_places_screen': (context) => SearchPlaces(),
+          '/select_active_driver_screen': (context) =>
+              SelectActiveDriverScreen(),
+          '/rate_driver_screen': (context) => RateDriverScreen(),
         },
         //home: Home(),
-        debugShowCheckedModeBanner: false
-    ),
+        debugShowCheckedModeBanner: false),
   ));
 }
-
-
-
-
-
-
