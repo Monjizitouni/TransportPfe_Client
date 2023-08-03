@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,30 +36,22 @@ class PlacesPredictionTileDesign extends StatelessWidget {
     if (responseApi == "Error fetching the request") {
       return;
     }
-    if (responseApi["status"] == "OK" && from) {
-      Directions userPickupAddress = Directions();
-      userPickupAddress.locationId = place_id;
-      userPickupAddress.locationName = responseApi["result"]["name"];
-      userPickupAddress.locationLatitude =
+    if (responseApi["status"] == "OK") {
+      Directions adress = Directions();
+      adress.locationId = place_id;
+      adress.locationName = responseApi["result"]["name"];
+      adress.locationLatitude =
           responseApi["result"]["geometry"]["location"]["lat"];
-      userPickupAddress.locationLongitude =
+      adress.locationLongitude =
           responseApi["result"]["geometry"]["location"]["lng"];
+      if (from) {
+        Provider.of<AppInfo>(context, listen: false)
+            .updatePickupLocationAddress(adress);
+      } else {
+        Provider.of<AppInfo>(context, listen: false)
+            .updateDropOffLocationAddress(adress);
+      }
 
-      Provider.of<AppInfo>(context, listen: false)
-          .updatePickupLocationAddress(userPickupAddress);
-      Navigator.pop(context, "Obtained");
-    }
-    if (responseApi["status"] == "OK" && !from) {
-      Directions userDropOffAddress = Directions();
-      userDropOffAddress.locationId = place_id;
-      userDropOffAddress.locationName = responseApi["result"]["name"];
-      userDropOffAddress.locationLatitude =
-          responseApi["result"]["geometry"]["location"]["lat"];
-      userDropOffAddress.locationLongitude =
-          responseApi["result"]["geometry"]["location"]["lng"];
-
-      Provider.of<AppInfo>(context, listen: false)
-          .updateDropOffLocationAddress(userDropOffAddress);
       Navigator.pop(context, "Obtained");
     }
   }

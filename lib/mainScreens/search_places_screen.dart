@@ -20,6 +20,7 @@ class _SearchPlacesState extends State<SearchPlaces> {
       TextEditingController();
   List<PredictedPlaces> placesPredictedList = [];
   List<PredictedPlaces> placesPredictedList1 = [];
+  late bool from;
 
   void findPlaceAutoCompleteSearch(String input) async {
     if (input.length > 1) {
@@ -140,6 +141,7 @@ class _SearchPlacesState extends State<SearchPlaces> {
                         Expanded(
                           child: TextFormField(
                             onChanged: (textTyped) {
+                              from = true;
                               findPlaceAutoCompleteSearch(textTyped);
                             },
                             decoration: InputDecoration(
@@ -149,7 +151,6 @@ class _SearchPlacesState extends State<SearchPlaces> {
                                     ? Provider.of<AppInfo>(context)
                                         .userPickupLocation!
                                         .locationName!
-                                        .substring(0, 16)
                                     : "No Address found",
                                 fillColor: Colors.grey.shade100,
                                 filled: true,
@@ -178,8 +179,8 @@ class _SearchPlacesState extends State<SearchPlaces> {
                                   itemBuilder: (context, index) {
                                     return PlacesPredictionTileDesign(
                                       predictedPlaces:
-                                          placesPredictedList1[index],
-                                      from: true,
+                                          placesPredictedList[index],
+                                      from: from,
                                     );
                                   },
                                   separatorBuilder:
@@ -206,6 +207,8 @@ class _SearchPlacesState extends State<SearchPlaces> {
                         Expanded(
                           child: TextFormField(
                             onChanged: (textTyped) {
+                              from = false;
+
                               findPlaceAutoCompleteSearch(textTyped);
                             },
                             decoration: InputDecoration(
@@ -245,7 +248,7 @@ class _SearchPlacesState extends State<SearchPlaces> {
                       itemBuilder: (context, index) {
                         return PlacesPredictionTileDesign(
                           predictedPlaces: placesPredictedList[index],
-                          from: false,
+                          from: from,
                         );
                       },
                       separatorBuilder: (BuildContext context, int index) {
